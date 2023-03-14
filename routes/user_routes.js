@@ -5,7 +5,6 @@ const {
   logoutUser,
   getUserDetails,
 } = require("../controllers/user_controller");
-const { isAuthenticatedUser } = require("../middlewares/auth");
 
 const route = express.Router();
 
@@ -15,6 +14,6 @@ route.route("/user-login").post(loginUser);
 route.route("/user-logout").post(logoutUser);
 
 // user details route
-route.route("/user-me").get(isAuthenticatedUser, getUserDetails);
+route.route("/user-me").get(getUserDetails);
 
 module.exports = route;
