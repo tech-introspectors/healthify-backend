@@ -2,6 +2,7 @@ const catchAsyncError = require("../middlewares/catchAsyncError");
 const User = require("../models/userModel");
 const ErrorHandler = require("../utils/errorHandler");
 const sendToken = require("../utils/jwtToken");
+const jwt = require("jsonwebtoken");
 
 exports.registerUser = catchAsyncError(async (req, res, next) => {
   const { fullName, email, password } = req.body;
@@ -57,7 +58,14 @@ exports.logoutUser = catchAsyncError(async (req, res, next) => {
 
 // get user details
 exports.getUserDetails = catchAsyncError(async (req, res, next) => {
-  const user = await User.findById(req.user.id);
+  const token = req.headers.authorization;
+
+  if (!token) {
+    return next(new ErrorHandler("Missing token", 401));
+  }
+
+  const decoded = jwt.verify(token, process.env.JWT_SECRET);
+  const user = await User.findById(decoded.id);
 
   res.status(200).json({ success: true, user });
 });
