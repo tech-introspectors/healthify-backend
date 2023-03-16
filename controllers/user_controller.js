@@ -60,6 +60,8 @@ exports.logoutUser = catchAsyncError(async (req, res, next) => {
 exports.getUserDetails = catchAsyncError(async (req, res, next) => {
   const token = req.headers.authorization;
 
+  console.log(token);
+
   if (!token) {
     return next(new ErrorHandler("Missing token", 401));
   }

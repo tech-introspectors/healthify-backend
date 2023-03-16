@@ -12,7 +12,7 @@ const route = express.Router();
 route.route("/user-register").post(registerUser);
 route.route("/user-login").post(loginUser);
 route.route("/user-logout").post(logoutUser);
-// route.route("")
+
 // user details route
 route.route("/user-me").get(getUserDetails);
 
