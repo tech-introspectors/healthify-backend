@@ -20,6 +20,9 @@ app.use(cors());
 const user = require("./routes/user_routes");
 
 app.use("/api/v1", user);
+app.use("/api/v1/test", (req, res) => {
+  res.status(200).json({message: "running"})
+})
 
 // Middleware for Errors Handling.
 app.use(errorMiddleware);
