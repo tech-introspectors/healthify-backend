@@ -69,3 +69,80 @@ exports.getUserDetails = catchAsyncError(async (req, res, next) => {
 
   res.status(200).json({ success: true, user });
 });
+
+// update user data
+exports.updateUserData = catchAsyncError(async (req, res, next) => {
+  const { weight, height, bmi, gender, fullName } = req.body;
+  const userId = req.params.userId;
+
+  let message = "";
+
+  if (weight) {
+    const response = await User.findByIdAndUpdate(
+      userId,
+      { weight: weight },
+      {
+        new: true,
+        runValidators: true,
+        useFindAndModify: false,
+      }
+    );
+
+    if (response) {
+      message = "Updated your weight.";
+    }
+  }
+
+  if (height) {
+    const response = await User.findByIdAndUpdate(userId, height, {
+      new: true,
+      runValidators: true,
+      useFindAndModify: false,
+    });
+
+    if (response) {
+      message = "Updated your height.";
+    }
+  }
+
+  if (bmi) {
+    const response = await User.findByIdAndUpdate(userId, bmi, {
+      new: true,
+      runValidators: true,
+      useFindAndModify: false,
+    });
+
+    if (response) {
+      message = "Updated your BMI.";
+    }
+  }
+
+  if (gender) {
+    const response = await User.findByIdAndUpdate(userId, gender, {
+      new: true,
+      runValidators: true,
+      useFindAndModify: false,
+    });
+
+    if (response) {
+      message = "Updated your gender.";
+    }
+  }
+
+  if (fullName) {
+    const response = await User.findByIdAndUpdate(userId, fullName, {
+      new: true,
+      runValidators: true,
+      useFindAndModify: false,
+    });
+
+    if (response) {
+      message = "Updated your fullName.";
+    }
+  }
+
+  res.status(200).json({
+    success: true,
+    message: message,
+  });
+});

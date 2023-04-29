@@ -4,6 +4,7 @@ const {
   loginUser,
   logoutUser,
   getUserDetails,
+  updateUserData,
 } = require("../controllers/user_controller");
 
 const route = express.Router();
@@ -15,5 +16,10 @@ route.route("/user-logout").post(logoutUser);
 
 // user details route
 route.route("/user-me").get(getUserDetails);
+route.route("/user-me/:userId").put(updateUserData);
+
+route.route("/test").get((req, res) => {
+  res.status(200).json({ success: true, message: "Server is running..." });
+});
 
 module.exports = route;
