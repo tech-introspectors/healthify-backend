@@ -69,3 +69,42 @@ exports.getUserDetails = catchAsyncError(async (req, res, next) => {
 
   res.status(200).json({ success: true, user });
 });
+
+// ------------------------------------------------------------------
+// New update profile endpoint. Do not modify any of the existing functionality.
+// ------------------------------------------------------------------
+exports.updateProfile = catchAsyncError(async (req, res, next) => {
+  const { fullName, weight, height } = req.body;
+
+  // Check for token in header
+  const token = req.headers.authorization;
+  if (!token) {
+    return next(new ErrorHandler("Missing token", 401));
+  }
+
+  // Decode token to get the user id.
+  const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+  // Calculate BMI if weight and height are provided.
+  let bmi;
+  if (weight && height) {
+    bmi = Math.round(weight / ((height / 100) * (height / 100)));
+  }
+
+  // Update the user.
+  const updatedUser = await User.findByIdAndUpdate(
+    decoded.id,
+    { fullName, weight, height, bmi },
+    { new: true, runValidators: true }
+  );
+
+  if (!updatedUser) {
+    return next(new ErrorHandler("User not found", 404));
+  }
+
+  res.status(200).json({
+    success: true,
+    message: "Profile updated successfully",
+    user: updatedUser,
+  });
+});

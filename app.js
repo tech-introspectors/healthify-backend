@@ -18,9 +18,10 @@ app.use(cors());
 
 // all route imports
 const user = require("./routes/user_routes");
+const feedbackRoutes = require("./routes/feedback_routes");
 
 app.use("/api/v1", user);
-
+app.use("/api/v1/feedback", feedbackRoutes); // Now POST requests to /api/v1/feedback are handled
 // Middleware for Errors Handling.
 app.use(errorMiddleware);
 
